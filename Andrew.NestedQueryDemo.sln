@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DIRDB", "DIRDB\DIRDB.sqlproj", "{953D4E84-0255-45F5-9E05-F74D90302EC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,12 @@ Global
 		{95FCA032-0567-4F82-A2A0-40C591A62F6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95FCA032-0567-4F82-A2A0-40C591A62F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95FCA032-0567-4F82-A2A0-40C591A62F6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953D4E84-0255-45F5-9E05-F74D90302EC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953D4E84-0255-45F5-9E05-F74D90302EC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953D4E84-0255-45F5-9E05-F74D90302EC7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{953D4E84-0255-45F5-9E05-F74D90302EC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953D4E84-0255-45F5-9E05-F74D90302EC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953D4E84-0255-45F5-9E05-F74D90302EC7}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
