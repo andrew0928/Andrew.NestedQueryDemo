@@ -104,3 +104,123 @@ rollback
 --
 
 
+declare @srcID int;
+declare @destID int;
+
+-- step 1, 找出 c:\windows\backup 的 ID (@destID)
+select @destID = D3.ID
+from
+	demo1.DIRINFO D1 inner join 
+	demo1.DIRINFO D2 on D1.ID = D2.PARENT_ID inner join
+	demo1.DIRINFO D3 on D2.ID = D3.PARENT_ID
+where D1.NAME = 'c:\' and D2.NAME = 'windows' and D3.NAME = 'backup'
+
+
+-- step 2, 找出 c:\users 的 ID (@srcID)
+select @srcID = D2.ID
+from
+	demo1.DIRINFO D1 inner join 
+	demo1.DIRINFO D2 on D1.ID = D2.PARENT_ID 
+where D1.NAME = 'c:\' and D2.NAME = 'users'
+
+
+-- step 3, 搬移 c:\users 目錄
+update demo1.DIRINFO set PARENT_ID = @destID where ID = @srcID
+
+
+-- step 4, 用 DIR_CTE 列出 c:\windows\backup\ 的目錄列表
+;with DIR_CTE(ID, NAME, FULLNAME) as
+(
+	select ID, NAME, cast('./' + NAME as ntext)
+	from demo1.DIRINFO
+	where PARENT_ID = @destID
+
+	union all
+
+	select D1.ID, D1.NAME, cast(concat(D2.FULLNAME, '/', D1.NAME) as ntext)
+	from demo1.DIRINFO D1 inner join DIR_CTE D2 on D1.PARENT_ID = D2.ID
+)
+
+select * from DIR_CTE
+
+
+
+--
+-- delete
+--
+
+declare @root int;		-- c:\windows
+declare @destID int;	-- c:\windows\backup
+
+-- step 1, 找出 c:\windows\backup 的 ID (@destID)
+select @destID = D3.ID, @root = D2.ID
+from
+	demo1.DIRINFO D1 inner join 
+	demo1.DIRINFO D2 on D1.ID = D2.PARENT_ID inner join
+	demo1.DIRINFO D3 on D2.ID = D3.PARENT_ID
+where D1.NAME = 'c:\' and D2.NAME = 'windows' and D3.NAME = 'backup'
+
+-- step 1.1, 列出 c:\windows 的所有子目錄 (刪除前)
+;with DIR_CTE(ID, NAME, FULLNAME) as
+(
+	select ID, NAME, cast('./' + NAME as ntext)
+	from demo1.DIRINFO
+	where PARENT_ID = @root
+
+	union all
+
+	select D1.ID, D1.NAME, cast(concat(D2.FULLNAME, '/', D1.NAME) as ntext)
+	from demo1.DIRINFO D1 inner join DIR_CTE D2 on D1.PARENT_ID = D2.ID
+)
+
+select * from DIR_CTE
+
+-- step 2, 刪除 c:\windows\backup (@destID) 下的所有檔案
+
+;with DIR_CTE(ID, NAME, FULLNAME) as
+(
+	select ID, NAME, cast('./' + NAME as ntext)
+	from demo1.DIRINFO
+	where PARENT_ID = @destID
+
+	union all
+
+	select D1.ID, D1.NAME, cast(concat(D2.FULLNAME, '/', D1.NAME) as ntext)
+	from demo1.DIRINFO D1 inner join DIR_CTE D2 on D1.PARENT_ID = D2.ID
+)
+
+delete demo1.FILEINFO where DIR_ID in (select ID from DIR_CTE)
+
+
+
+-- step 3, 刪除 c:\windows\backup (@destID) 下的所有目錄
+
+;with DIR_CTE(ID, NAME, FULLNAME) as
+(
+	select ID, NAME, cast('./' + NAME as ntext)
+	from demo1.DIRINFO
+	where PARENT_ID = @destID
+
+	union all
+
+	select D1.ID, D1.NAME, cast(concat(D2.FULLNAME, '/', D1.NAME) as ntext)
+	from demo1.DIRINFO D1 inner join DIR_CTE D2 on D1.PARENT_ID = D2.ID
+)
+
+delete demo1.DIRINFO where ID in (select ID from DIR_CTE)
+
+
+-- step 4, 列出 c:\windows 的所有子目錄 (刪除後)
+;with DIR_CTE(ID, NAME, FULLNAME) as
+(
+	select ID, NAME, cast('./' + NAME as ntext)
+	from demo1.DIRINFO
+	where PARENT_ID = @root
+
+	union all
+
+	select D1.ID, D1.NAME, cast(concat(D2.FULLNAME, '/', D1.NAME) as ntext)
+	from demo1.DIRINFO D1 inner join DIR_CTE D2 on D1.PARENT_ID = D2.ID
+)
+
+select * from DIR_CTE
