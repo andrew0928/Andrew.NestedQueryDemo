@@ -60,16 +60,22 @@
     <Folder Include="Properties" />
     <Folder Include="dbo\" />
     <Folder Include="demo1\" />
+    <Folder Include="demo2\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="demo1-migration.sql" />
+    <None Include="migration.sql" />
     <None Include="demo1-tree-operation.sql" />
+    <None Include="demo2-tree-operation.sql" />
+    <None Include="SqlSchemaCompare1.scmp" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\FILEINFO.sql" />
     <Build Include="dbo\DIRINFO.sql" />
+    <Build Include="demo2\FILEINFO.sql" />
+    <Build Include="demo2\DIRINFO.sql" />
     <Build Include="demo1\DIRINFO.sql" />
     <Build Include="demo1\FILEINFO.sql" />
+    <Build Include="demo2.sql" />
     <Build Include="demo1.sql" />
   </ItemGroup>
 </Project>
