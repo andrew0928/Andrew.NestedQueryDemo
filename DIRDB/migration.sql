@@ -34,3 +34,21 @@ from dbo.DIRINFO;
 SET IDENTITY_INSERT demo2.DIRINFO OFF;
 
 insert into demo2.FILEINFO select ID, DIR_ID, FILE_NAME as NAME, FILE_EXT as EXT, FILE_SIZE as SIZE from dbo.FILEINFO;
+
+
+
+--
+-- migration from [dbo] to [demo3]
+--
+truncate table demo3.FILEINFO;
+delete demo3.FILEINFO;
+delete demo3.DIRINFO;
+
+
+SET IDENTITY_INSERT demo3.DIRINFO ON;
+insert into demo3.DIRINFO (ID, NAME, LEFT_INDEX, RIGHT_INDEX) select ID, NAME, LEFT_INDEX, RIGHT_INDEX from dbo.DIRINFO;
+SET IDENTITY_INSERT demo3.DIRINFO OFF;
+
+insert into demo3.FILEINFO select ID, DIR_ID, FILE_NAME as NAME, FILE_EXT as EXT, FILE_SIZE as SIZE from dbo.FILEINFO;
+
+

@@ -61,12 +61,14 @@
     <Folder Include="dbo\" />
     <Folder Include="demo1\" />
     <Folder Include="demo2\" />
+    <Folder Include="demo3\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="migration.sql" />
     <None Include="demo1-tree-operation.sql" />
     <None Include="demo2-tree-operation.sql" />
     <None Include="SqlSchemaCompare1.scmp" />
+    <None Include="demo3-tree-operation.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\FILEINFO.sql" />
@@ -77,5 +79,8 @@
     <Build Include="demo1\FILEINFO.sql" />
     <Build Include="demo2.sql" />
     <Build Include="demo1.sql" />
+    <Build Include="demo3\DIRINFO.sql" />
+    <Build Include="demo3\FILEINFO.sql" />
+    <Build Include="demo3.sql" />
   </ItemGroup>
 </Project>
